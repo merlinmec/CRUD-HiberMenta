@@ -1,0 +1,22 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+   "-//Hibernate/Hibernate Configuration DTD 3.0//PTBR"
+   "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+   <session-factory>
+
+      <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+      <property name="connection.url">jdbc:mysql://127.0.0.1:3306/dbagenda?useTimezone=true&amp;serverTimezone=UTC&amp;useSSL=false</property>
+      <property name="connection.username">root</property>
+      <property name="connection.password">123456</property>
+      <property name="connection.pool_size">1</property>
+      <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+      <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+      <property name="hbm2ddl.auto">update</property>
+      
+      <!-- Mapping -->
+	  <mapping resource="mec/model/Contato.hbm.xml"/>
+
+      
+   </session-factory>
+   
+</hibernate-configuration>

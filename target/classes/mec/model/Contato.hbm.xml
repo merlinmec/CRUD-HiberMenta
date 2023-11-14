@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+    <class name="mec.model.Contato" table="contatos">
+        <id name="idcon" type="int" column="idcon">
+            <generator class="native"/>
+        </id>
+
+        <property name="nome" column="nome" type="string"/>
+        <property name="telefone" column="telefone" type="string"/>
+        <property name="email" column="email" type="string"/>
+        <property name="rua" column="rua" type="string"/>
+        <property name="numero" column="num" type="string"/>
+        <property name="bairro" column="bairro" type="string"/>
+        <property name="cidade" column="cidade" type="string"/>
+        <property name="estado" column="estado" type="string"/>
+    </class>
+</hibernate-mapping>

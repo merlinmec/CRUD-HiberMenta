@@ -1,0 +1,147 @@
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto; 
+}
+
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;	
+	
+}
+
+.table-responsive{
+  width: 100% !important;
+}
+
+.table {
+    border: 1px solid blue;
+    width: 85% !important;
+    margin: auto;
+}
+
+.table-status {
+    margin-top: 20px;
+    margin-bottom: 20px !important;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    width: 400px;    
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    margin: 3px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+a:hover {
+    background-color: #e0e0e0;
+}
+
+
+.btn-edit {
+    background-color: #f9bb13;
+    color: #fff;
+    width: 50px
+}
+
+.btn-edit:hover {
+    background-color: #e0a800;
+}
+
+.btn-delete {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #d63a2e;
+}
+
+.btn-cancel {
+    display: block;
+    margin: 10px auto;
+    width: 100px;
+    background-color: #95a5a6;
+    color: #fff;
+    text-align: center;
+}
+
+.btn-cancel:hover {
+    background-color: #7f8c8d;
+}
+
+
+.btn-create {
+    display: block;
+    margin: 10px auto;
+    width: 175px;
+    background-color: #3498db;
+    color: #fff;
+    text-align: center;
+}
+
+.btn-create:hover {
+    background-color: #2074a0;
+}
+
+form {
+    max-width: 400px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+font[style="color:red"] {
+    font-size: 14px;
+    margin-top: 4px;
+    display: block;
+    position: static;
+}
