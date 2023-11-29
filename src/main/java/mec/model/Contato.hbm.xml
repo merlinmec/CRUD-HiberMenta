@@ -17,5 +17,6 @@
         <property name="bairro" column="bairro" type="string"/>
         <property name="cidade" column="cidade" type="string"/>
         <property name="estado" column="estado" type="string"/>
+        
     </class>
 </hibernate-mapping>

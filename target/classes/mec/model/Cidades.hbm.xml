@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="mec.model">
+    <class name="mec.model.Cidades" table="cidade">
+        <id name="id" column="CODIGO_CIDADE">
+            <generator class="assigned" />
+        </id>
+        <property name="nome" column="NOME" />
+        
+        <many-to-one name="estado" class="mec.model.Estados" column="CODIGO_ESTADO" />
+    </class>
+</hibernate-mapping>

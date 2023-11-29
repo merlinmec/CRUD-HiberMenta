@@ -11,7 +11,7 @@ public class Contato {
 	private String bairro;
 	private String cidade;
 	private String estado;
-		
+
 	public Contato() {
 		super();
 	}
@@ -28,6 +28,7 @@ public class Contato {
 		this.cidade = cidade;
 		this.estado = estado;
 	}
+
 
 	public int getIdcon() {
 			return idcon;

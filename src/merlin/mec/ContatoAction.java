@@ -1,6 +1,8 @@
 package merlin.mec;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mentawai.core.BaseAction;
 import org.mentawai.rule.MethodRule;
@@ -9,17 +11,22 @@ import org.mentawai.rule.StringRule;
 import org.mentawai.validation.Validatable;
 import org.mentawai.validation.Validator;
 
+
 import mec.dao.ContatoDAO;
+import mec.dao.LocalizacaoDAO;
 import mec.util.HibernateUtil;
 import mec.model.Contato;
 
 public class ContatoAction extends BaseAction implements Validatable{
 	
+	private LocalizacaoDAO localizacaoDAO;
 	private ContatoDAO contatoDAO;
 
     public ContatoAction() {
         this.contatoDAO = new ContatoDAO(HibernateUtil.getSessionFactory());
+        this.localizacaoDAO = new LocalizacaoDAO(HibernateUtil.getSessionFactory());
     }
+    
     
     public void prepareValidator(Validator val, String method) {
 		 
@@ -42,10 +49,6 @@ public class ContatoAction extends BaseAction implements Validatable{
 			 val.add("numero", StringRule.getInstance(0,10), "Campo Nº da Residência com o tamanho errado (máx = 10)");
 			 val.add("bairro",RegexRule.getInstance(regexAlfanumerico), "O campo Bairro não pode ter caracteres especiais!");
 			 val.add("bairro", StringRule.getInstance(5,40), "Campo Bairro com o tamanho errado (mín = 5, máx = 40)");
-			 val.add("cidade",RegexRule.getInstance(regexAlfanumerico), "O campo Cidade não pode ter caracteres especiais!!");
-			 val.add("cidade", StringRule.getInstance(5,30), "Campo Cidade com o tamanho errado (mín = 5, máx = 30)");
-			 val.add("estado",RegexRule.getInstance(regexAlfanumerico), "O campo Estado não pode ter caracteres especiais!");
-			 val.add("estado", StringRule.getInstance(2,20), "Campo Estado com o tamanho errado (mín = 2, máx = 20)");
 		 }  else if (method != null && method.equals("update") && isPost()) {
 			 val.requiredFields("Campo Obrigatório!","nome", "telefone","email","rua","numero","bairro","cidade","estado");
 			 val.add("nome", StringRule.getInstance(3,25), "Campo Nome com o tamanho errado (mín = 3, máx = 25)");
@@ -61,19 +64,21 @@ public class ContatoAction extends BaseAction implements Validatable{
 			 val.add("numero", StringRule.getInstance(0,10), "Campo Nº da Residência com o tamanho errado (máx = 10)");
 			 val.add("bairro",RegexRule.getInstance(regexAlfanumerico), "O campo Bairro não pode ter caracteres especiais!");
 			 val.add("bairro", StringRule.getInstance(5,40), "Campo Bairro com o tamanho errado (mín = 5, máx = 40)");
-			 val.add("cidade",RegexRule.getInstance(regexAlfanumerico), "O campo Cidade não pode ter caracteres especiais!!");
-			 val.add("cidade", StringRule.getInstance(5,30), "Campo Cidade com o tamanho errado (mín = 5, máx = 30)");
-			 val.add("estado",RegexRule.getInstance(regexAlfanumerico), "O campo Estado não pode ter caracteres especiais!");
-			 val.add("estado", StringRule.getInstance(2,20), "Campo Estado com o tamanho errado (mín = 2, máx = 20)");	 
 		 }	
 	 }
     
     public String create() {
+    	
+    	 Map<Integer, String> estadosMap = localizacaoDAO.getEstadosAsMap();
+         output.setValue("estadosMap", estadosMap);
+
+         Map<Integer, String> cidadesMap = localizacaoDAO.getCidadesAsMap();
+         output.setValue("cidadesMap", cidadesMap);
+         
         if (!isPost()) {
             return ERROR;
         }
         Contato contato = createContatoPeloInput();
-
         try {
             contatoDAO.createContato(contato);
             addMessage("Contato criado!");
@@ -84,8 +89,15 @@ public class ContatoAction extends BaseAction implements Validatable{
         return SUCCESS;  
     }
 
-
     public String update() {
+    	        
+    	Map<Integer, String> estadosMap = localizacaoDAO.getEstadosAsMap();
+        output.setValue("estadosMap", estadosMap);
+        
+        Map<Integer, String> cidadesMap = localizacaoDAO.getCidadesAsMap();
+        output.setValue("cidadesMap", cidadesMap);        
+         
+        
         if (!isPost()) {
             return EDIT;
         }
@@ -99,7 +111,6 @@ public class ContatoAction extends BaseAction implements Validatable{
         }
 
         if (contato != null && contato.getIdcon() == idContato) {
-        	
 
             Contato contatoAtualizado = createContatoPeloInput();
 
@@ -126,7 +137,6 @@ public class ContatoAction extends BaseAction implements Validatable{
             return ERROR;
         }
     }
-
     
     
     public String delete() {
@@ -153,9 +163,10 @@ public class ContatoAction extends BaseAction implements Validatable{
     }
 
 
-
     private Contato createContatoPeloInput() {
         Contato contato = new Contato();
+        
+        
         contato.setNome(input.getString("nome"));
         contato.setTelefone(input.getString("telefone"));
         contato.setEmail(input.getString("email"));
@@ -164,16 +175,24 @@ public class ContatoAction extends BaseAction implements Validatable{
         contato.setBairro(input.getString("bairro"));
         contato.setCidade(input.getString("cidade"));
         contato.setEstado(input.getString("estado"));
+        
         return contato;
     }
     
     public String select() {
+    	
+    	Map<Integer, String> estadosMap = localizacaoDAO.getEstadosAsMap();
+        output.setValue("estadosMap", estadosMap);
+        
+        Map<Integer, String> cidadesMap = localizacaoDAO.getCidadesAsMap();
+        output.setValue("cidadesMap", cidadesMap); 
+    	
+        
         int id = input.getInt("id");
         try {
             Contato contato = contatoDAO.selectContato(id);
             if (contato != null) {
                 output.setValue("contato", contato);
-                
                 return SUCCESS;
             } else {
                 addError("Contato não encontrado");
@@ -211,6 +230,21 @@ public class ContatoAction extends BaseAction implements Validatable{
             return contatoDAO.findByEmail(email) == null;
         }
         return true;
+    }
+    
+    public String cidadesMapJSON() {
+        int estadoId = input.getInt("id");
+        Map<Integer, String> cidadesMap = localizacaoDAO.getCidadesByEstadoId(estadoId);
+        System.out.println(input.getInt("id"));
+        System.out.println(cidadesMap);
+        Map<String, String> stringCidadesMap = new LinkedHashMap<>();
+        for (Map.Entry<Integer, String> entry : cidadesMap.entrySet()) {
+            stringCidadesMap.put(String.valueOf(entry.getKey()), entry.getValue());
+        }
+        System.out.println(stringCidadesMap);
+        ajax(stringCidadesMap);
+
+        return SUCCESS;
     }
    
 }

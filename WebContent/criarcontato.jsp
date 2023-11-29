@@ -13,6 +13,7 @@
     <link rel="icon" href="imagens/favicon.png">
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 </head>
 <%
@@ -29,6 +30,7 @@
             <font color="red"><mtw:out /></font>
         </mtw:outError>
             <br>
+            <mtw:contextPath/>
 
             <label>Email:</label>
             <mtw:input type="email" name="email" maxlength="25"/>
@@ -65,24 +67,42 @@
             </mtw:outError>
             <br>
 
-            <label>Estado:</label>
-            <mtw:input type="text" name="estado" maxlength="20" />
-            <mtw:outError field="estado">
-            <font color="red"><mtw:out /></font>
-            </mtw:outError>
-            <br>
-            
-            <label>Cidade:</label>
-            <mtw:input type="text" name="cidade" maxlength="30" />
-            <mtw:outError field="cidade">
-            <font color="red"><mtw:out /></font>
-            </mtw:outError>
-            <br>
-
+			<label>Estado:</label>
+			<mtw:select name="estado" list="estadosMap" emptyField="true" emptyFieldValue="Selecione um Estado"  id ="estado" />
+			<br>
+			
+			<label>Cidade:</label>
+			<mtw:select name="cidade" list="cidadesMap" emptyField="true" emptyFieldValue="Necessário escolher um Estado" id ="cidade"/>
+			
+		
             <mtw:submit value="Salvar" klass="btn btn-primary"/>
         </mtw:form>
         <br>
         <a href="<%= contextPath %>/ContatoAction.list.mtw" class="btn btn-cancel">Cancelar</a>
     </div>
+    <script type="text/javascript">
+    $(document).ready(function () {
+    	$(document).ready(function() {
+    	    $("#cidade").prop('disabled', true);
+
+    	    $("#estado").change(function () {
+    	        $("#cidade").empty();
+
+    	        let est = $("#estado").val();
+    	        let url = "ContatoAction.cidadesMapJSON.mtw?id=" + est;
+
+    	        $.getJSON(url, function (data) {
+    	            $.each(data, function (key, value) {
+    	                $("#cidade").append('<option value="' + key + '">' + value + '</option>');
+    	            });
+    	            $("#cidade").prop('disabled', false);
+    	        }).fail(function (data) {
+    	            $("#cidade").append("<option>Cidade Inválida</option>");
+    	            $("#cidade").prop('disabled', true);
+    	        });
+    	    });
+    	});
+    });
+    </script>
 </body>
 </html>

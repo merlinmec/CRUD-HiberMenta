@@ -1,6 +1,9 @@
 package merlin.mec;
 
 
+
+import org.mentawai.ajax.renderer.JsonRenderer;
+import org.mentawai.filter.AjaxFilter;
 import org.mentawai.filter.ValidationFilter;
 
 
@@ -8,6 +11,8 @@ public class AppManager extends org.mentawai.core.ApplicationManager {
 
     public void loadFilters() {
         filter(new ValidationFilter());
+        filter(new AjaxFilter(AJAX));
+        on(AJAX, ajax(new JsonRenderer()));
     }
 
     @Override
@@ -15,13 +20,13 @@ public class AppManager extends org.mentawai.core.ApplicationManager {
         addActionPackage("merlin.mec");
         
         action(ContatoAction.class, "create")
-        .on(ERROR, fwd("/criarcontato.jsp"))
+        .on(ERROR, redir("/criarcontato.jsp"))
         .on(SUCCESS, fwd("/ContatoAction.list.mtw"));
         
         action(ContatoAction.class, "update")
         .on(ERROR, fwd("/editarcontato.jsp"))
         .on(EDIT, fwd("/editarcontato.jsp"))
-        .on(SUCCESS, redir("/ContatoAction.list.mtw"));
+        .on(SUCCESS, fwd("/ContatoAction.list.mtw"));
 
         
         action(ContatoAction.class, "delete")
@@ -33,9 +38,12 @@ public class AppManager extends org.mentawai.core.ApplicationManager {
         .on(SUCCESS, fwd("/contatos.jsp"));
         
         action(ContatoAction.class, "select")
-        .on(ERROR, fwd("/contatos.jsp"))
+        .on(ERROR, redir("/contatos.jsp"))
         .on(SUCCESS, fwd("/editarcontato.jsp"));
         
+        action(ContatoAction.class, "cidadesMapJSON")
+        .on(SUCCESS, ajax(new JsonRenderer()));
+
     }
 
 }

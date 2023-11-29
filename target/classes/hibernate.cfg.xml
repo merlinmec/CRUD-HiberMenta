@@ -15,6 +15,8 @@
       
       <!-- Mapping -->
 	  <mapping resource="mec/model/Contato.hbm.xml"/>
+	  <mapping resource="mec/model/Estados.hbm.xml"/>
+	  <mapping resource="mec/model/Cidades.hbm.xml"/>
 
       
    </session-factory>
